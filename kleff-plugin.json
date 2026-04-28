@@ -1,0 +1,40 @@
+{
+  "id": "tempo-plugin",
+  "name": "Tempo",
+  "type": "observability",
+  "tier": 2,
+  "description": "Distributed tracing backend. Receives trace spans from the platform via gRPC and stores them in Grafana Tempo.",
+  "longDescription": "Deploys a gRPC wrapper alongside a Tempo container. The platform forwards trace spans via IngestSpan gRPC calls; the wrapper writes them to Tempo using the Zipkin push API.\n\nExposes a TraceQL-compatible query endpoint at http://tempo:3200 for Grafana and other visualizers.",
+  "tags": ["observability", "traces", "tempo", "grafana", "tracing", "opentelemetry"],
+  "capabilities": ["monitoring.traces"],
+  "author": "Kleff",
+  "repo": "https://github.com/kleffio/plugins/tempo-plugin",
+  "image": "ghcr.io/kleffio/tempo-plugin",
+  "version": "0.1.0",
+  "license": "MIT",
+  "verified": true,
+  "companions": [
+    {
+      "id": "tempo",
+      "image": "grafana/tempo:2.5.0",
+      "command": ["-config.file=/etc/tempo.yaml"],
+      "ports": [
+        { "container": 3200, "host": 3200 },
+        { "container": 9411, "host": 9411 }
+      ],
+      "volumes": [{ "name": "kleff-tempo-data", "target": "/var/tempo" }],
+      "internalAddr": "http://tempo:9411",
+      "skipIfEnv": "TEMPO_URL"
+    }
+  ],
+  "config": [
+    {
+      "key": "TEMPO_URL",
+      "label": "Tempo Zipkin URL",
+      "description": "Override to use an external Tempo instance (Zipkin endpoint). Leave blank to use the bundled companion.",
+      "type": "url",
+      "required": false,
+      "advanced": true
+    }
+  ]
+}
