@@ -1,13 +1,11 @@
-# Build context is the plugins/ directory so we can access the local SDK.
 FROM golang:1.25-alpine AS builder
 
 WORKDIR /src
 
-COPY plugin-sdk-go /plugin-sdk-go
-COPY tempo-plugin/go.mod tempo-plugin/go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY tempo-plugin/ .
+COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o /plugin ./cmd/plugin
 
