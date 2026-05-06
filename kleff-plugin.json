@@ -9,7 +9,7 @@
   "capabilities": ["monitoring.traces"],
   "author": "Kleff",
   "repo": "https://github.com/kleffio/plugins/tempo-plugin",
-  "image": "ghcr.io/kleffio/tempo-plugin",
+  "image": "ghcr.io/kleffio/traces-tempo",
   "version": "0.1.0",
   "license": "MIT",
   "verified": true,
